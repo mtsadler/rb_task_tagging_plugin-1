@@ -1,12 +1,8 @@
 from airflow.models.xcom import XCom
-from airflow.utils.decorators import apply_defaults
 from airflow.utils.db import provide_session
 from airflow.utils.helpers import as_tuple
-from sqlalchemy import Column, Integer, String, Index, LargeBinary, and_
+from sqlalchemy import and_
 import json
-from sqlalchemy import JSON
-from airflow.utils.sqlalchemy import UtcDateTime
-from airflow.utils import timezone
 
 
 def set_xcom_tags(context, key, value):
