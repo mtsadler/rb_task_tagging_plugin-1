@@ -11,7 +11,7 @@ import sys
 from airflow.configuration import conf
 from airflow.models import Variable
 
-plugin_name = "rb_plugin_template"
+plugin_name = "rb_task_tagging_plugin"
 
 manual_instructions = f"""
     MANUAL SETUP INSTRUCTIONS:
