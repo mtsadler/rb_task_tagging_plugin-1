@@ -118,4 +118,9 @@ xcom_operator_custom_pull = PythonOperator(
     dag=dag,
 )
 
-start >> xcom_operator_push_1 >> xcom_operator_push_2 >> xcom_operator_push_3 >> xcom_operator_custom_pull >> end
+start >> \
+    xcom_operator_push_1 >> \
+    xcom_operator_push_2 >> \
+    xcom_operator_push_3 >> \
+    xcom_operator_custom_pull >> \
+    end

@@ -34,19 +34,20 @@ def get_many_xcom_tags(
 ):
     """Retrieve XComs, optionally meeting certain criteria.
 
-    XComs are queried based on execution date, key, value, task_ids, and dag_ids.
-        The value is passed in as a dict and then serialized to a JSON formatted
-        string to be split up into a list containing the individual key/value pairs.
+    XComs are queried based on execution date, key, value, task_ids, and
+        dag_ids. The value is passed in as a dict and then serialized to a JSON
+        formatted string to be split up into a list containing the individual
+        key/value pairs.
 
     Args:
         min_execution_date (datetime): The min date to filter on.
         max_execution_date (datetime): The max date to filter on.
         key (string): The key to filter on.
         values (dict): A JSON object of values to filter on.
-        task_ids (str or iterable of strings (representing task_ids)): The tag_ids
-            to filter on.
-        dag_ids (str or iterable of strings (representing dag_ids)): The dag_ids
-            to filter on.
+        task_ids (str or iterable of strings (representing task_ids)): The
+            tag_ids to filter on.
+        dag_ids (str or iterable of strings (representing dag_ids)): The
+            dag_ids to filter on.
         limit (int): The max number of results to be returned by XComs query.
 
     Returns:
@@ -62,7 +63,9 @@ def get_many_xcom_tags(
         values = json.dumps(values)[1:-1].strip().split(",")
 
         for item in values:
-            cleaned_values.append(XCom.serialize_value("%" + item.strip() + "%"))
+            cleaned_values.append(
+                XCom.serialize_value("%" + item.strip() + "%")
+            )
 
     if key:
         filters.append(XCom.key == key)
