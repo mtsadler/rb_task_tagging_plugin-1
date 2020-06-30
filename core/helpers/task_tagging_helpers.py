@@ -43,7 +43,7 @@ def get_many_xcom_tags(
         min_execution_date (datetime): The min date to filter on.
         max_execution_date (datetime): The max date to filter on.
         key (string): The key to filter on.
-        values (dict): A JSON object of values to filter on.
+        values (dict): A dictionary of values to filter on.
         task_ids (str or iterable of strings (representing task_ids)): The
             tag_ids to filter on.
         dag_ids (str or iterable of strings (representing dag_ids)): The
