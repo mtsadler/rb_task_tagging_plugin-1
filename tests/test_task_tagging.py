@@ -76,7 +76,7 @@ class TaskTaggingTest(unittest.TestCase):
             dag_ids=self.ti.dag_id,
             task_ids=self.ti.task_id,
             key=TEST_KEY,
-            values=TEST_VALUE_DICT,
+            # values=TEST_VALUE_DICT,
         )
 
         print('Returned xcoms: ', returned_xcom_tasks)
