@@ -84,6 +84,17 @@ class TaskTaggingTest(unittest.TestCase):
         # assert list returned is not empty, xcom matches were found
         self.assertTrue(bool(returned_xcom_tasks))
 
+        returned_xcom_tasks_w_value = get_many_xcom_tags(
+            dag_ids=self.ti.dag_id,
+            task_ids=self.ti.task_id,
+            key=TEST_KEY,
+            values=TEST_VALUE_DICT,
+        )
+
+        print('Returned xcoms: ', returned_xcom_tasks_w_value)
+
+        self.assertTrue(bool(returned_xcom_tasks_w_value))
+
 
 if __name__ == "__main__":
     unittest.main()
