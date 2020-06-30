@@ -1,7 +1,8 @@
 # rb_plugin_template
-A template repository for Raybeam's Airflow Plugins  
+This is a template repository for Raybeam's Airflow Plugins. The readme will contain a description of what the plugin does and instructions for downloading and deploying it.  
   
-Description about plugin here.  
+If you are setting up a new plugin, read through the Getting Started page of the [Wiki](https://github.com/Raybeam/rb_plugin_template/wiki/Getting-Started).
+
 # Set up
 These are instructions for importing this plugin into an existing airflow workspace.  
 To start, navigate to the root of your airflow workspace.  
@@ -20,10 +21,16 @@ The deployment environments are:
 Clone plugin into local workspace  
 ```
 git clone https://github.com/Raybeam/rb_plugin_template plugins/rb_plugin_template
+```  
+  
+Clone deploy script into local workspace  
 ```
-Run plugin's deploy script.  
+git clone https://github.com/Raybeam/rb_plugin_deploy plugins/rb_plugin_deploy
+```  
+  
+Run deploy script.  
 ```
-./plugins/rb_plugin_template/deploy.sh
+./plugins/rb_plugin_deploy/deploy.sh
 ```
   
 ## Set up : Local Deploy
@@ -45,9 +52,6 @@ By putting the `AIRFLOW_HOME` env in the `bin/activate` file, you set the path e
 ### Initialize your Airflow DB
 `> airflow initdb`
 
-### Set up a user (admin:admin)
-`> airflow create_user -r Admin -u admin -e admin@example.com -f admin -l user -p admin`
-
 ### Clone the plugin into your plugins
 `> git clone https://github.com/Raybeam/rb_plugin_template plugins/rb_plugin_template`
 
@@ -66,6 +70,9 @@ Move over the samples (if wanted)
 
 ### Enable rbac
 In the root directory of your airflow workspace, open airflow.cfg and set `rbac=True`.
+
+### Set up a user (admin:admin)
+`> airflow create_user -r Admin -u admin -e admin@example.com -f admin -l user -p admin`
 
 ### Turn on Webserver
 `>airflow webserver`
