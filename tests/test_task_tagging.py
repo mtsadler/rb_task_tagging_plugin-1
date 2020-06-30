@@ -1,4 +1,4 @@
-from rb_task_tagging_plugin.core.helpers.task_tagging_helpers import (
+from core.helpers.task_tagging_helpers import (
     set_xcom_tags,
     get_many_xcom_tags,
 )
