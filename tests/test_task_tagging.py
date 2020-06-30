@@ -1,8 +1,7 @@
-from home.circleci.rb_test_airflow.plugins.rb_task_tagging_plugin.\
-    core.helpers.task_tagging_helpers import (
-        set_xcom_tags,
-        get_many_xcom_tags,
-        )
+from plugins.rb_task_tagging_plugin.core.helpers.task_tagging_helpers import (
+    set_xcom_tags,
+    get_many_xcom_tags,
+    )
 
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
