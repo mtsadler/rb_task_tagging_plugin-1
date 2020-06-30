@@ -70,7 +70,11 @@ class TaskTaggingTest(unittest.TestCase):
     # test pulling tags that do exist
     def test_pull_existing_tags(self):
 
-        self.ti.xcom_push(TEST_KEY, TEST_VALUE_FORMATTED_JSON)
+        # self.ti.xcom_push(TEST_KEY, TEST_VALUE_FORMATTED_JSON)
+
+        context = self.ti.get_template_context()
+
+        set_xcom_tags(context, TEST_KEY, TEST_VALUE_DICT)
 
         returned_xcom_tasks = get_many_xcom_tags(
             dag_ids=self.ti.dag_id,
@@ -80,6 +84,8 @@ class TaskTaggingTest(unittest.TestCase):
         )
 
         print('Returned xcoms: ', returned_xcom_tasks)
+        if returned_xcom_tasks:
+            print('Returned value: ', returned_xcom_tasks[0].value)
 
         # assert list returned is not empty, xcom matches were found
         self.assertTrue(bool(returned_xcom_tasks))
@@ -92,6 +98,8 @@ class TaskTaggingTest(unittest.TestCase):
         )
 
         print('Returned xcoms: ', returned_xcom_tasks_w_value)
+        if returned_xcom_tasks_w_value:
+            print('Returned value: ', returned_xcom_tasks_w_value[0].value)
 
         self.assertTrue(bool(returned_xcom_tasks_w_value))
 
