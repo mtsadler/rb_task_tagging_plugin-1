@@ -40,15 +40,16 @@ def get_many_xcom_tags(
         key/value pairs.
 
     Args:
-        min_execution_date (datetime): The min date to filter on.
-        max_execution_date (datetime): The max date to filter on.
-        key (string): The key to filter on.
-        values (dict): A dictionary of values to filter on.
-        task_ids (str or iterable of strings (representing task_ids)): The
-            tag_ids to filter on.
-        dag_ids (str or iterable of strings (representing dag_ids)): The
-            dag_ids to filter on.
-        limit (int): The max number of results to be returned by XComs query.
+        min_execution_date (datetime, optional): The min date to filter on.
+        max_execution_date (datetime, optional): The max date to filter on.
+        key (string, optional): The key to filter on.
+        values (dict, optional): A dictionary of values to filter on.
+        task_ids (str or iterable of strings (representing task_ids),optional):
+            The tag_ids to filter on.
+        dag_ids (str or iterable of strings (representing dag_ids), optional):
+            The dag_ids to filter on.
+        limit (int, optional): The max number of results to be returned by XCom
+            query.
 
     Returns:
         A list of XCom objects that matched the filter criteria. If no matches
