@@ -62,10 +62,15 @@ def get_many_xcom_tags(
     # split the values into a list of individual key/value pairs
     if values:
         values = json.dumps(values)[1:-1].strip().split(",")
+        print("Stripped values: ", values)
 
         for item in values:
             cleaned_values.append(
                 XCom.serialize_value("%" + item.strip() + "%")
+            )
+            print(
+                "Values to use in like: ",
+                XCom.serialize_value("%" + item.strip() + "%"),
             )
 
     if key:
