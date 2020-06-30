@@ -99,7 +99,7 @@ jobs:
             fi
           done
           set +e
-        name: Start Airflow and run all plugins compatibility tests
+        name: Start Airflow and run all plugins unit and compatibility tests
     - run:
         command: |-
           echo "TRIGGERER: ${CIRCLE_USERNAME}"
