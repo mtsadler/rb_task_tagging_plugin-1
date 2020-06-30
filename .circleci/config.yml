@@ -81,6 +81,8 @@ jobs:
           echo -e "spinning up scheduler and webserver..."
           $schedule_airflow &
           $webserve_airflow &
+          cp -r /home/circleci/project/ /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}
+          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests/ -m "not compatibility"
           set -e
           cat /home/circleci/rb_test_airflow/plugins/rb_plugin_deploy/VERSIONS.md  | while read line || [[ -n $line ]];
           do
@@ -98,12 +100,6 @@ jobs:
           done
           set +e
         name: Start Airflow and run all plugins compatibility tests
-    - run:
-        command: |-
-          . ~/.venv/bin/activate
-          cp -r /home/circleci/project/ /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}
-          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests/ -m "not compatibility"
-        name: Run current plugin's unittests
     - run:
         command: |-
           echo "TRIGGERER: ${CIRCLE_USERNAME}"
