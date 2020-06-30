@@ -1,4 +1,5 @@
-from rb_task_tagging_plugin.core.helpers.task_tagging_helpers import (
+
+from home.circleci.rb_test_airflow.plugins.rb_task_tagging_plugin.core.helpers.task_tagging_helpers import (
     set_xcom_tags,
     get_many_xcom_tags,
 )
