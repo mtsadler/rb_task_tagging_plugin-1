@@ -36,7 +36,6 @@ class TaskTaggingTest(unittest.TestCase):
     def tearDown(self, session):
         session.query(XCom).filter(
             XCom.key == TEST_KEY,
-            XCom.value == TEST_VALUE_SERIALIZED,
             XCom.task_id == self.ti.task_id,
             XCom.dag_id == self.ti.dag_id,
         ).delete()
