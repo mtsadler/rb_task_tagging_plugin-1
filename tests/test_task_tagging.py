@@ -79,6 +79,8 @@ class TaskTaggingTest(unittest.TestCase):
             values=TEST_VALUE_DICT,
         )
 
+        print('Returned xcoms: ', returned_xcom_tasks)
+
         # assert list returned is not empty, xcom matches were found
         self.assertTrue(bool(returned_xcom_tasks))
 
