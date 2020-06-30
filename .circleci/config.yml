@@ -71,12 +71,6 @@ jobs:
     - run:
         command: |-
           . ~/.venv/bin/activate
-          cp -r /home/circleci/project/ /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}
-          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests/ -m "not compatibility"
-        name: Run current plugin's unittests
-    - run:
-        command: |-
-          . ~/.venv/bin/activate
           cd /home/circleci/rb_test_airflow
           export AIRFLOW_HOME=$PWD
           cp ~/project/.circleci/airflow.cfg $AIRFLOW_HOME/airflow.cfg
@@ -104,6 +98,12 @@ jobs:
           done
           set +e
         name: Start Airflow and run all plugins compatibility tests
+    - run:
+        command: |-
+          . ~/.venv/bin/activate
+          cp -r /home/circleci/project/ /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}
+          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests/ -m "not compatibility"
+        name: Run current plugin's unittests
     - run:
         command: |-
           echo "TRIGGERER: ${CIRCLE_USERNAME}"
