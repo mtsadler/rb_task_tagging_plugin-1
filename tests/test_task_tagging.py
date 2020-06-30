@@ -1,7 +1,7 @@
-from rb_task_tagging_plugin.core.helpers.task_tagging_helpers import (
+from core.helpers.task_tagging_helpers import (
     set_xcom_tags,
     get_many_xcom_tags,
-    )
+)
 
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
@@ -11,6 +11,7 @@ from airflow.models.xcom import XCom
 from datetime import datetime
 import unittest
 import json
+from airflow.configuration import conf
 
 DEFAULT_DATE = "2020-06-01"
 TEST_DAG_ID = "test_task_tagging"
@@ -72,6 +73,11 @@ class TaskTaggingTest(unittest.TestCase):
 
         # self.ti.xcom_push(TEST_KEY, TEST_VALUE_FORMATTED_JSON)
 
+        if conf.getboolean("core", "enable_xcom_pickling"):
+            print("Pickling is enabled")
+        else:
+            print('Picking is disabled')
+
         context = self.ti.get_template_context()
 
         set_xcom_tags(context, TEST_KEY, TEST_VALUE_DICT)
@@ -83,9 +89,12 @@ class TaskTaggingTest(unittest.TestCase):
             # values=TEST_VALUE_DICT,
         )
 
-        print('Returned xcoms: ', returned_xcom_tasks)
+        print("Returned xcoms: ", returned_xcom_tasks)
         if returned_xcom_tasks:
-            print('Returned value: ', returned_xcom_tasks[0].value)
+            print("Returned value: ", returned_xcom_tasks[0].value)
+            print(
+                "Returned value: ", type(returned_xcom_tasks[0].value)
+            )
 
         # assert list returned is not empty, xcom matches were found
         self.assertTrue(bool(returned_xcom_tasks))
@@ -97,9 +106,12 @@ class TaskTaggingTest(unittest.TestCase):
             values=TEST_VALUE_DICT,
         )
 
-        print('Returned xcoms: ', returned_xcom_tasks_w_value)
+        print("Returned xcoms: ", returned_xcom_tasks_w_value)
         if returned_xcom_tasks_w_value:
-            print('Returned value: ', returned_xcom_tasks_w_value[0].value)
+            print("Returned value: ", returned_xcom_tasks_w_value[0].value)
+            print(
+                "Returned value: ", type(returned_xcom_tasks_w_value[0].value)
+            )
 
         self.assertTrue(bool(returned_xcom_tasks_w_value))
 
