@@ -78,22 +78,6 @@ jobs:
           $webserve_airflow &
           cp -r /home/circleci/project/ /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}
           pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests/ -m "not compatibility"
-          set -e
-          cat /home/circleci/rb_test_airflow/plugins/rb_plugin_deploy/VERSIONS.md  | while read line || [[ -n $line ]];
-          do
-            if [[ $line =~ "["*"]"  ]]; then
-              plugin_name=${line#*\[}
-              plugin_name=${plugin_name%\]*}
-              unset ret
-              pytest /home/circleci/rb_test_airflow/plugins/$plugin_name/tests -m compatibility || ret=$?
-              if [ -n "$ret" ]; then
-                if ! [[ "05" =~ "$ret" ]]; then
-                  exit "$ret"
-                fi
-              fi
-            fi
-          done
-          set +e
         name: Start Airflow and run all plugins unit and compatibility tests
     - run:
         command: |-
