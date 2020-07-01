@@ -28,6 +28,11 @@ jobs:
     - run:
         command: |-
           . ~/.venv/bin/activate
+          flake8 --config=/home/circleci/projects/.flake8
+        name: Run flake8 linter
+    - run:
+        command: |-
+          . ~/.venv/bin/activate
           sudo apt-get update
           sudo apt-get install postgresql postgresql-contrib
           sudo sed -i 's~host    all             all             127.0.0.1/32            md5~host    all             all             0.0.0.0/0               trust~g' /etc/postgresql/$(ls /etc/postgresql)/main/pg_hba.conf
@@ -66,26 +71,24 @@ jobs:
     - run:
         command: |-
           . ~/.venv/bin/activate
-          echo 1
+          cp -r /home/circleci/project/ /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}
+          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests/ -m "not compatibility"
+        name: Run current plugin's unittests
+    - run:
+        command: |-
+          . ~/.venv/bin/activate
           cd /home/circleci/rb_test_airflow
-          echo 2
           export AIRFLOW_HOME=$PWD
-          echo 3
           cp ~/project/.circleci/airflow.cfg $AIRFLOW_HOME/airflow.cfg
           echo "Attempting to initialize airflow..."
           airflow initdb &> /dev/null || true
           airflow initdb
           echo "Airflow initialized successfully."
           airflow create_user -r Admin -u admin -e admin@example.com -f admin -l user -p admin
-          echo 6
           schedule_airflow="airflow scheduler"
-          echo 7
           webserve_airflow="airflow webserver"
-          echo 8
           echo -e "spinning up scheduler and webserver..."
-          echo 9
           $schedule_airflow &
-          echo 10
           $webserve_airflow &
           set -e
           cat /home/circleci/rb_test_airflow/plugins/rb_plugin_deploy/VERSIONS.md  | while read line || [[ -n $line ]];
