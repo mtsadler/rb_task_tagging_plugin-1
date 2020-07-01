@@ -2,7 +2,6 @@ from airflow.models.xcom import XCom
 from airflow.utils.db import provide_session
 from airflow.utils.helpers import as_tuple
 from sqlalchemy import and_
-from sqlalchemy.dialects import postgresql
 import json
 
 
@@ -62,21 +61,12 @@ def get_many_xcom_tags(
 
     # split the values into a list of individual key/value pairs
     if values:
-        print(values)
         values = json.dumps(values)[1:-1].strip().split(",")
-        print(values)
-        print("Stripped values: ", values)
-        print("Stripped values: ", [v.strip() for v in values])
 
         for item in values:
             cleaned_values.append(
                 # XCom.serialize_value("%" + item.strip() + "%")
                 ("%" + item.strip() + "%").encode("UTF-8")
-            )
-            print(
-                "Values to use in like: ",
-                # XCom.serialize_value("%" + item.strip() + "%"),
-                ("%" + item.strip() + "%").encode("UTF-8"),
             )
 
     if key:
@@ -99,13 +89,6 @@ def get_many_xcom_tags(
         .order_by(XCom.execution_date.desc(), XCom.timestamp.desc())
         .limit(limit)
     )
-    print(
-        str(
-            query.statement.compile(
-                dialect=postgresql.dialect(),
-                compile_kwargs={"literal_binds": True},
-            )
-        )
-    )
+
     results = query.all()
     return results
