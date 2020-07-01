@@ -11,6 +11,7 @@ from airflow.models.xcom import XCom
 from datetime import datetime
 import unittest
 import json
+import pytest
 from airflow.configuration import conf
 
 DEFAULT_DATE = "2020-06-01"
@@ -23,6 +24,7 @@ TEST_VALUE_FORMATTED_JSON = json.dumps(TEST_VALUE_DICT)
 TEST_VALUE_SERIALIZED = TEST_VALUE_FORMATTED_JSON.encode('UTF-8')
 
 
+@pytest.mark.compatibility
 class TaskTaggingTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
