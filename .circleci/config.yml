@@ -73,7 +73,7 @@ jobs:
           echo 3
           cp ~/project/.circleci/airflow.cfg $AIRFLOW_HOME/airflow.cfg
           echo 4
-          airflow initdb  &> /dev/null
+          airflow initdb
           echo 5
           airflow create_user -r Admin -u admin -e admin@example.com -f admin -l user -p admin
           echo 6
