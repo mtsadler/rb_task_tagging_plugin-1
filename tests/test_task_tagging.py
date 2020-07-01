@@ -19,7 +19,8 @@ TEST_KEY = "bbb_tags_testing"
 TEST_VALUE = '{ "tag1":"val1", "tag2":"val2", "tag3":"val3" }'
 TEST_VALUE_DICT = json.loads(TEST_VALUE)
 TEST_VALUE_FORMATTED_JSON = json.dumps(TEST_VALUE_DICT)
-TEST_VALUE_SERIALIZED = XCom.serialize_value(TEST_VALUE_FORMATTED_JSON)
+# TEST_VALUE_SERIALIZED = XCom.serialize_value(TEST_VALUE_FORMATTED_JSON)
+TEST_VALUE_SERIALIZED = TEST_VALUE_FORMATTED_JSON.encode('UTF-8')
 
 
 class TaskTaggingTest(unittest.TestCase):
@@ -52,7 +53,7 @@ class TaskTaggingTest(unittest.TestCase):
             key=TEST_KEY, task_ids=self.ti.task_id, dag_id=self.ti.dag_id
         )
 
-        self.assertEqual(test_set_results, TEST_VALUE_FORMATTED_JSON)
+        self.assertEqual(test_set_results, TEST_VALUE_DICT)
 
     # test pulling tags that do not exist
     @provide_session

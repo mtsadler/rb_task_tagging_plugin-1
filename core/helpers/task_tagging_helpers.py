@@ -17,7 +17,7 @@ def set_xcom_tags(context, key, value):
     """
 
     context["ti"].xcom_push(
-        key=key, value=json.dumps(value),
+        key=key, value=value,
     )
 
 
@@ -66,11 +66,13 @@ def get_many_xcom_tags(
 
         for item in values:
             cleaned_values.append(
-                XCom.serialize_value("%" + item.strip() + "%")
+                # XCom.serialize_value("%" + item.strip() + "%")
+                ("%" + item.strip() + "%").encode('UTF-8')
             )
             print(
                 "Values to use in like: ",
-                XCom.serialize_value("%" + item.strip() + "%"),
+                # XCom.serialize_value("%" + item.strip() + "%"),
+                ("%" + item.strip() + "%").encode('UTF-8')
             )
 
     if key:
