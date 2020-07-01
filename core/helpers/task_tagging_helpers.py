@@ -97,6 +97,7 @@ def get_many_xcom_tags(
         .order_by(XCom.execution_date.desc(), XCom.timestamp.desc())
         .limit(limit)
     )
-    print(str(query.statement.compile(dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True})))
+    print(str(query.statement.compile(dialect=postgresql.dialect(),
+      compile_kwargs={'literal_binds': True})))
     results = query.all()
     return results
