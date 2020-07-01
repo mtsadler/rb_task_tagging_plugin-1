@@ -66,17 +66,29 @@ jobs:
     - run:
         command: |-
           . ~/.venv/bin/activate
+          echo 1
           cd /home/circleci/rb_test_airflow
+          echo 2
           export AIRFLOW_HOME=$PWD
+          echo 3
           cp ~/project/.circleci/airflow.cfg $AIRFLOW_HOME/airflow.cfg
+          echo 4
           airflow initdb  &> /dev/null
+          echo 5
           airflow create_user -r Admin -u admin -e admin@example.com -f admin -l user -p admin
+          echo 6
           schedule_airflow="airflow scheduler"
+          echo 7
           webserve_airflow="airflow webserver"
+          echo 8
           echo -e "spinning up scheduler and webserver..."
+          echo 9
           $schedule_airflow &
+          echo 10
           $webserve_airflow &
+          echo 11
           cp -r /home/circleci/project/ /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}
+          echo 12
           pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests/ -m "not compatibility"
         name: Start Airflow and run all plugins unit and compatibility tests
     - run:
