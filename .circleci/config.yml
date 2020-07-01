@@ -18,7 +18,7 @@ jobs:
           python3 -m venv ~/.venv
           . ~/.venv/bin/activate
           pip3 install --upgrade pip
-          pip3 install apache-airflow
+          pip3 install --upgrade apache-airflow
           pip3 install -r requirements.txt
         name: Setup venv
     - save_cache:
@@ -72,9 +72,10 @@ jobs:
           export AIRFLOW_HOME=$PWD
           echo 3
           cp ~/project/.circleci/airflow.cfg $AIRFLOW_HOME/airflow.cfg
-          echo 4
+          echo "Attempting to initialize airflow..."
+          airflow initdb &> /dev/null || true
           airflow initdb
-          echo 5
+          echo "Airflow initialized successfully."
           airflow create_user -r Admin -u admin -e admin@example.com -f admin -l user -p admin
           echo 6
           schedule_airflow="airflow scheduler"
@@ -86,11 +87,29 @@ jobs:
           $schedule_airflow &
           echo 10
           $webserve_airflow &
-          echo 11
-          cp -r /home/circleci/project/ /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}
-          echo 12
-          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests/ -m "not compatibility"
-        name: Start Airflow and run all plugins unit and compatibility tests
+          set -e
+          cat /home/circleci/rb_test_airflow/plugins/rb_plugin_deploy/VERSIONS.md  | while read line || [[ -n $line ]];
+          do
+            if [[ $line =~ "["*"]"  ]]; then
+              plugin_name=${line#*\[}
+              plugin_name=${plugin_name%\]*}
+              unset ret
+              pytest /home/circleci/rb_test_airflow/plugins/$plugin_name/tests -m compatibility || ret=$?
+              if [ -n "$ret" ]; then
+                if ! [[ "05" =~ "$ret" ]]; then
+                  exit "$ret"
+                fi
+              fi
+            fi
+          done
+          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests -m compatibility || ret=$?
+          if [ -n "$ret" ]; then
+            if ! [[ "05" =~ "$ret" ]]; then
+              exit "$ret"
+            fi
+          fi
+          set +e
+        name: Start Airflow and run all plugins compatibility tests
     - run:
         command: |-
           echo "TRIGGERER: ${CIRCLE_USERNAME}"
