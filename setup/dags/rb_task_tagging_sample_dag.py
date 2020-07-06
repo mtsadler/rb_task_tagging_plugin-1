@@ -66,7 +66,7 @@ def get_value_via_custom_xcom(**context):
         values=json.loads('{ "activity":"transfer", "level":"source" }'),
     )
 
-    print("The following tasks were returned")
+    print("The following tasks were returned: ", returned_xcom_tasks)
     print(returned_xcom_tasks)
 
     for match in returned_xcom_tasks:
