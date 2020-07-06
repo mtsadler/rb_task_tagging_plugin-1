@@ -67,14 +67,10 @@ def get_value_via_custom_xcom(**context):
     )
 
     print("The following tasks were returned: ", returned_xcom_tasks)
-    print(returned_xcom_tasks)
 
     for match in returned_xcom_tasks:
         print("Task match: ", match.task_id)
-        # print('At this time: ', match.execution_date)
         print("For this value: ", match.value)
-        # value_json = json.loads(match.value)
-        # print('For this value: ', value_json["activity"])
 
 
 dag = DAG(

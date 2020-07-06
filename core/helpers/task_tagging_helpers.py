@@ -13,7 +13,7 @@ def set_xcom_tags(context, key, value):
 
     Args:
         key (string): The tag's key.
-        value (dict): The tag's values, a JSON object.
+        value (dict): The tag's values.
     """
 
     context["ti"].xcom_push(
