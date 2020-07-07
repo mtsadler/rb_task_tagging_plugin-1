@@ -1,8 +1,10 @@
-# rb_plugin_template
-A template repository for Raybeam's Airflow Plugins  
-  
-Description about plugin here.  
-# Set up
+# rb_task_tagging_plugin
+The Airflow Task Tagging plugin facilitates the categorical tagging of Airflow task instances, as well as retrieving tasks based on the set tags.
+
+## Additional Information
+For more information, example use cases, and the defined Raybeam tagging taxonomy, please refer to the [Technical Specification](https://docs.google.com/document/d/1EYQctRNgWQ2hbZlUxEDEzv3hKL4LsujoO57oV4BcUCs/edit?usp=sharing)
+
+## Set up
 These are instructions for importing this plugin into an existing airflow workspace.  
 To start, navigate to the root of your airflow workspace.  
 If you don't have an existing workspace, you can download the sample:  
@@ -19,11 +21,17 @@ The deployment environments are:
 ## Quick Setup
 Clone plugin into local workspace  
 ```
-git clone https://github.com/Raybeam/rb_plugin_template plugins/rb_plugin_template
+git clone https://github.com/Raybeam/rb_task_tagging_plugin plugins/rb_task_tagging_plugin
+```  
+  
+Clone deploy script into local workspace  
 ```
-Run plugin's deploy script.  
+git clone https://github.com/Raybeam/rb_plugin_deploy plugins/rb_plugin_deploy
+```  
+  
+Run deploy script.  
 ```
-./plugins/rb_plugin_template/deploy.sh
+./plugins/rb_plugin_deploy/deploy.sh
 ```
   
 ## Set up : Local Deploy
@@ -45,27 +53,30 @@ By putting the `AIRFLOW_HOME` env in the `bin/activate` file, you set the path e
 ### Initialize your Airflow DB
 `> airflow initdb`
 
-### Set up a user (admin:admin)
-`> airflow create_user -r Admin -u admin -e admin@example.com -f admin -l user -p admin`
-
 ### Clone the plugin into your plugins
-`> git clone https://github.com/Raybeam/rb_plugin_template plugins/rb_plugin_template`
+`> git clone https://github.com/Raybeam/rb_task_tagging_plugin plugins/rb_task_tagging_plugin`
 
 ### Copy over plugins requirements
-`> cat plugins/rb_plugin_template/requirements.txt >> requirements.txt`  
+`> cat plugins/rb_task_tagging_plugin/requirements.txt >> requirements.txt`  
 `> pip install -r requirements.txt`
 
 ### Set up the plugin
 Move over the samples (if wanted)
 
-`> plugins/rb_plugin_template/bin/setup init`
+`> plugins/rb_task_tagging_plugin/bin/setup init`
 
-`> plugins/rb_plugin_template/bin/setup add_samples`
+`> plugins/rb_task_tagging_plugin/bin/setup add_samples`
 
-`> plugins/rb_plugin_template/bin/setup add_samples --dag_only`
+`> plugins/rb_task_tagging_plugin/bin/setup add_samples --dag_only`
 
 ### Enable rbac
 In the root directory of your airflow workspace, open airflow.cfg and set `rbac=True`.
+
+### Disable XCom Pickling
+In the root directory of your airflow workspace, open airflow.cfg and set `enable_xcom_pickling = False`.
+
+### Set up a user (admin:admin)
+`> airflow create_user -r Admin -u admin -e admin@example.com -f admin -l user -p admin`
 
 ### Turn on Webserver
 `>airflow webserver`
@@ -101,7 +112,7 @@ In a web brower, visit localhost:8080.
 ## Set up : Google Cloud Composer Deploy
 
 ### Clone the plugin into your plugins
-`> git clone https://github.com/Raybeam/rb_plugin_template plugins/rb_plugin_template`
+`> git clone https://github.com/Raybeam/rb_task_tagging_plugin plugins/rb_task_tagging_plugin`
 
 ### Install gcloud 
 [Install](https://cloud.google.com/sdk/docs/quickstarts) the gcloud SDK and configure it to your Cloud Composer Environment.
