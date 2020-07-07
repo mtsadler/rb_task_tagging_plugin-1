@@ -133,6 +133,7 @@ It may take a few minutes for cloud composer to finish updating after running th
 >gcloud composer environments update ENVIRONMENT_NAME --location LOCATION --update-airflow-configs \  
 	webserver-rbac=False,\  
 	core-store_serialized_dags=False,\  
+	core-enable_xcom_pickling=False,\  
 	webserver-async_dagbag_loader=True,\  
 	webserver-collect_dags_interval=10,\  
 	webserver-dagbag_sync_interval=10,\  
