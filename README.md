@@ -122,7 +122,7 @@ In a web brower, visit localhost:8080.
 
 `>gcloud config set project <your Google Cloud project name>`  
 
-`>gcloud composer environments update ENVIRONMENT_NAME --location LOCATION --update-pypi-packages-from-file=plugins/rb_plugin_template/requirements.txt`  
+`>gcloud composer environments update ENVIRONMENT_NAME --location LOCATION --update-pypi-packages-from-file=plugins/rb_task_tagging_plugin/requirements.txt`  
 
 `ENVIRONMENT_NAME` is the name of the environment.  
 `LOCATION` is the Compute Engine region where the environment is located.  
@@ -163,4 +163,4 @@ Add the plugin to plugins folder:
 
 `ENVIRONMENT_NAME` is the name of the environment.  
 `LOCATION` is the Compute Engine region where the environment is located.  
-`SOURCE` is the absolute path to the local directory (full-path/plugins/rb_plugin_template/).  
+`SOURCE` is the absolute path to the local directory (full-path/plugins/rb_task_tagging_plugin/).  
