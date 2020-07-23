@@ -3,6 +3,7 @@ from airflow.configuration import conf
 import logging
 
 
+@pytest.mark.compatibility
 @pytest.mark.parametrize(
     ("curr_section", "curr_key", "expected_value"),
     [
