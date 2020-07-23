@@ -28,7 +28,7 @@ jobs:
     - run:
         command: |-
           . ~/.venv/bin/activate
-          flake8 --config=/home/circleci/projects/.flake8
+          flake8
         name: Run flake8 linter
     - run:
         command: |-
@@ -63,16 +63,30 @@ jobs:
             if [[ $line =~ "["*"]"  ]]; then
               plugin_name=${line#*\[}
               plugin_name=${plugin_name%\]*}
-              git clone https://github.com/Raybeam/$plugin_name /home/circleci/rb_test_airflow/plugins/$plugin_name
-              pip3 install -r /home/circleci/rb_test_airflow/plugins/$plugin_name/requirements.txt
+              if [[ $plugin_name != ${CIRCLE_PROJECT_REPONAME} ]]; then
+                git clone https://github.com/Raybeam/$plugin_name /home/circleci/rb_test_airflow/plugins/$plugin_name
+                pip3 install -r /home/circleci/rb_test_airflow/plugins/$plugin_name/requirements.txt
+                # if [[ -f "/home/circleci/rb_test_airflow/plugins/$plugin_name/bin/setup" ]]; then
+                #   plugins/$plugin_name/bin/setup init
+                # fi
+              fi
             fi
           done
         name: Clone rb airflow plugins and install their requirements
     - run:
         command: |-
           . ~/.venv/bin/activate
+          cd /home/circleci/rb_test_airflow
           cp -r /home/circleci/project/ /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}
-          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests/ -m "not compatibility"
+          pip3 install -r /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/requirements.txt
+          plugins/${CIRCLE_PROJECT_REPONAME}/bin/setup init
+          unset ret
+          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests/ -m "not compatibility" || ret=$?
+              if [ -n "$ret" ]; then
+                if ! [[ "05" =~ "$ret" ]]; then
+                  exit "$ret"
+                fi
+              fi
         name: Run current plugin's unittests
     - run:
         command: |-
@@ -97,7 +111,7 @@ jobs:
               plugin_name=${line#*\[}
               plugin_name=${plugin_name%\]*}
               unset ret
-              pytest /home/circleci/rb_test_airflow/plugins/$plugin_name/tests -m compatibility || ret=$?
+              pytest /home/circleci/rb_test_airflow/plugins/$plugin_name/tests || ret=$?
               if [ -n "$ret" ]; then
                 if ! [[ "05" =~ "$ret" ]]; then
                   exit "$ret"
@@ -105,7 +119,7 @@ jobs:
               fi
             fi
           done
-          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests -m compatibility || ret=$?
+          pytest  /home/circleci/rb_test_airflow/plugins/${CIRCLE_PROJECT_REPONAME}/tests || ret=$?
           if [ -n "$ret" ]; then
             if ! [[ "05" =~ "$ret" ]]; then
               exit "$ret"
@@ -133,3 +147,4 @@ workflows:
     jobs:
     - build
   version: 2
+
